@@ -3,7 +3,10 @@
 # See the "USER CONFIGURATION" section toward the end of the file.
 
 usage="
-Usage:  phpcm
+Usage:  phpcm [-p <prefix_addition>]
+  @param string -p  a string to append to the prefix.  Not necessary under
+                    most circumstances.  Useful for making builds
+                    containing changes that need to be keept separate.
 
 Configures and makes PHP for installation via 'phpi'.
 
@@ -22,6 +25,20 @@ if [[ $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
 	exit 1
 fi
 
+prefix_addition=
+while getopts "p:" OPTION ; do
+	case $OPTION in
+		p)
+			prefix_addition="-$OPTARG"
+			;;
+		?)
+			echo "ERROR: invalid command line parameter"
+			echo "$usage"
+			exit 1
+			;;
+	esac
+done
+
 
 if [[ $PWD != "$PHPVS_SRC_PATH/branches/"* && $PWD != "$PHPVS_SRC_PATH/trunk" ]]
 then
@@ -38,7 +55,7 @@ else
 	dir=${PWD//[^0-9]/}
 	major=${dir:0:2}
 fi
-prefix=$PHPVS_BIN_PATH/$dir
+prefix=$PHPVS_BIN_PATH/$dir$prefix_addition
 src_var=PHPVS_SRC_$major
 
 if [ -z "${!src_var}" ] ; then
