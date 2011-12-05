@@ -1,0 +1,118 @@
+# PHP Version Solution
+#
+# See $usage, below, for more information.
+
+
+# vvvvvvvvvvvvvvvvvvvvvvvvv
+# USER CONFIGURATION
+
+# The directory containing the "branches" and "trunk" directories
+# in a checkout of PHP's source code.
+export PHPVS_SRC_PATH=/path/to/php-src
+
+# The directory where the various versions of PHP should be installed.
+export PHPVS_BIN_PATH=/usr/local/php
+
+# The directory where phpvs and the central php.ini files are installed.
+export PHPVS_LIB_PATH=/usr/local/lib/phpvs
+
+# The path and name of the central pear executable.  On existing PEAR
+# installs, set this to the output of "pear config-get bin_dir" and
+# add "/pear" to it.
+export PHPVS_PEAR_BIN_FILE=/usr/local/bin/pear
+
+# The path and name of the central pear.conf file.  On existing PEAR
+# installs, set this to the value of "System Configuration File" shown
+# at the bottom of "pear config-show".
+export PHPVS_PEAR_CONFIG_FILE=/usr/local/etc/pear.conf
+
+# ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+# AUTOMATIC SETTINGS.  LEAVE STUFF BELOW HERE ALONE.
+
+export PHPVS_SRC_52=$PHPVS_SRC_PATH/branches/PHP_5_2
+export PHPVS_SRC_53=$PHPVS_SRC_PATH/branches/PHP_5_3
+export PHPVS_SRC_54=$PHPVS_SRC_PATH/branches/PHP_5_4
+export PHPVS_SRC_TR=$PHPVS_SRC_PATH/trunk
+
+alias cd52="cd $PHPVS_SRC_52"
+alias cd53="cd $PHPVS_SRC_53"
+alias cd54="cd $PHPVS_SRC_54"
+alias cdtr="cd $PHPVS_SRC_TR"
+alias cdsrc="cd $PHPVS_SRC_PATH"
+
+
+# THE FUNCTION.
+
+function phpvs () {
+	usage="
+Usage:  phpvs <version>
+  @param string <version>  the version to use.
+         * 'usr' removes the settings added by this function.
+         * Versions having '.lm' in them means --with-libmysql.
+           Others use --with-mysqlnd.
+         * Versions < 54 having '.ap' in them means --with-apxs2 (mod_php
+           SAPI for Apache).  Others use CGI SAPI.  All use CLI SAPI.
+         * See bottom of output for choices available on your system.
+
+Places the desired version of PHP at the front of your PATH.
+Also sets the TEST_PHP_EXECUTABLE and PHPVS_RUN_TEST environment
+variables used by 'phpt' and/or PHP's 'run-tests.php'.
+
+See Also:  peart, phpcm, phpi, phprm, phpt
+
+This is part of the PHP Version Solution:
+https://github.com/convissor/php_version_solution
+"
+
+	if [[ $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
+		echo "$usage"
+		echo -n "Version choices available: "
+		echo `ls $PHPVS_BIN_PATH`
+		echo ""
+		return 1
+	fi
+
+	if [ -z $1 ] ; then
+		echo "ERROR: enter the PHP version number to put in your PATH"
+		echo "$usage"
+		echo -n "Version choices available: "
+		echo `ls $PHPVS_BIN_PATH`
+		echo ""
+		return 1
+	fi
+
+	if [ -z $PHPVS_PATH_BASE ] ; then
+		export PHPVS_PATH_BASE=$PATH
+	fi
+
+	if [ $1 == usr ] ; then
+		export PATH=$PHPVS_PATH_BASE
+		src_var=PHPVS_SRC_54
+	else
+		add=$PHPVS_BIN_PATH/$1/bin
+
+		if [ ! -x $add/php ] ; then
+			echo "ERROR: $add/php does not exist or is not executable."
+			echo -n "Version choices available: "
+			echo `ls $PHPVS_BIN_PATH`
+			echo ""
+			return 1
+		fi
+
+		export PATH=$add:$PHPVS_PATH_BASE
+
+		src_var=PHPVS_SRC_${1:0:2}
+		src_var=${src_var^^*}
+	fi
+
+	export PHPVS_RUN_TEST=${!src_var}/run-tests.php
+	export TEST_PHP_EXECUTABLE=`which php`
+}
+export -f phpvs
+
+function pear() {
+	$PHPVS_PEAR_BIN_FILE -C $PHPVS_PEAR_CONFIG_FILE "$@"
+}
+export -f pear

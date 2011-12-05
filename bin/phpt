@@ -1,0 +1,20 @@
+#! /bin/bash
+
+if [[ -z $1 || $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
+	echo ""
+	echo "Usage:  phpt <path>"
+	echo "  @param string <path>  the file or directory to test."
+	echo "                        Directories are examined recursively."
+	echo ""
+	echo "Executes phpt unit tests using the version of PHP currently"
+	echo "selected by phpvs."
+	echo ""
+	echo "See Also:  peart, phpcm, phpi, phprm, phpvs"
+	echo ""
+	echo "This is part of the PHP Version Solution:"
+	echo "https://github.com/convissor/php_version_solution"
+	echo ""
+	exit 1
+fi
+
+$TEST_PHP_EXECUTABLE $PHPVS_RUN_TEST "$@"

@@ -1,0 +1,74 @@
+#! /bin/bash
+
+usage="
+Usage:  phprm
+
+Removes a PHP installation under the current directory.
+
+Call this program from the directory above the 'bin' directory containing
+the 'php' executable to be removed.
+
+NOTE: expects a standard GNU layout of PHP.
+
+See Also:  peart, phpcm, phpi, phpt, phpvs
+
+This is part of the PHP Version Solution:
+https://github.com/convissor/php_version_solution
+"
+
+if [[ $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
+	echo "$usage"
+	exit 1
+fi
+
+if [ ! -d bin/php ] ; then
+	echo "ERROR: $PWD/bin/php does not exist."
+	echo "$usage"
+	exit 1
+fi
+
+echo "This program will remove $PWD/bin/php and all associated files."
+echo -n "Do you want to proceed? [y|N]"
+read -e
+if [[ -z $REPLY || $REPLY == n || $REPLY == N ]] ; then
+	echo "No problem.  See you later."
+	exit 1
+fi
+
+rm -f bin/php
+rm -f bin/php-cgi
+rm -f bin/php-config
+rm -f bin/pecl
+rm -f bin/phpize
+rm -rf include/php
+rm -rf lib/php/20*
+rm -f man/man1/php*
+rm -f share/man/man1/php*
+
+echo ""
+echo "PHP has been removed."
+echo ""
+
+
+if [ ! -d bin/pear ] ; then
+	exit
+fi
+
+echo -n "Now, do you want to remove your PEAR install as well? [y/N]"
+read -e
+if [[ -z $REPLY || $REPLY == n || $REPLY == N ]] ; then
+	echo "No problem.  See you later."
+	exit
+fi
+
+rm -f bin/pear
+rm -f bin/peardev
+rm -f bin/phar
+rm -f bin/phar.phar
+rm -f etc/pear.conf
+rm -rf lib/php
+rm -rf share/pear
+
+echo ""
+echo "PEAR has been removed."
+echo ""

@@ -1,0 +1,21 @@
+#! /bin/bash
+
+if [[ -z $1 || $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
+	echo ""
+	echo "Usage:  peart [-r] <path>"
+	echo "  @param flag -r  recursively examine the <path>."
+	echo "  @param string <path>  the file or directory to test."
+	echo ""
+	echo "Executes phpt unit tests using PEAR's run-tests."
+	echo ""
+	echo "Note: uses error_reporting = E_ALL & ~E_STRICT & ~E_DEPRECATED"
+	echo ""
+	echo "See Also:  phpcm, phpi, phprm, phpt, phpvs"
+	echo ""
+	echo "This is part of the PHP Version Solution:"
+	echo "https://github.com/convissor/php_version_solution"
+	echo ""
+	exit 1
+fi
+
+pear run-tests -i "-d error_reporting='E_ALL & ~E_STRICT & ~E_DEPRECATED'" "$@"

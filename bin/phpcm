@@ -1,0 +1,173 @@
+#! /bin/bash
+
+# See the "USER CONFIGURATION" section toward the end of the file.
+
+usage="
+Usage:  phpcm
+
+Configures and makes PHP for installation via 'phpi'.
+
+Needs to be run from a trunk or branch subdirectory under PHPVS_SRC_PATH
+($PHPVS_SRC_PATH).  That and related environment
+variables are defined in $PHPVS_LIB_PATH/phpvs.
+
+See Also:  peart, phpi, phprm, phpt, phpvs
+
+This is part of the PHP Version Solution:
+https://github.com/convissor/php_version_solution
+"
+
+if [[ $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
+	echo "$usage"
+	exit 1
+fi
+
+
+if [[ $PWD != "$PHPVS_SRC_PATH/branches/"* && $PWD != "$PHPVS_SRC_PATH/trunk" ]]
+then
+	echo "ERROR: cd into a branch or trunk directory under"
+	echo "$PHPVS_SRC_PATH."
+	echo "$usage"
+	exit 1
+fi
+
+if [[ $PWD == *trunk ]] ; then
+	dir=tr
+	major=TR
+else
+	dir=${PWD//[^0-9]/}
+	major=${dir:0:2}
+fi
+prefix=$PHPVS_BIN_PATH/$dir
+src_var=PHPVS_SRC_$major
+
+if [ -z "${!src_var}" ] ; then
+	echo "ERROR: the environment variable corresponding to this directory,"
+	echo "$src_var, does not exist.  Add it to $PHPVS_LIB_PATH/phpvs,"
+	echo "run 'source ~/.bashrc', and try again."
+	exit 1
+fi
+if [ $PWD != ${!src_var} ] ; then
+	echo "ERROR: the directory you are in,"
+	echo $PWD
+	echo "does not correspond to the value of $src_var, which is"
+	echo ${!src_var}
+	echo "Edit $src_var in $PHPVS_LIB_PATH/phpvs,"
+	echo "run 'source ~/.bashrc', and try again."
+	exit 1
+fi
+
+
+# PHP 5.4 can do multiple SAPI's, but earlier versions can only to CLI + 1.
+do_apache=n
+if [ -x /etc/init.d/apache2 ] ; then
+	if [[ "$major" < "54" ]] ; then
+		echo ""
+		echo -n "Which SAPI should be built, Apache (a) or CGI (c)? [A|c] "
+		read -e
+		if [[ -z $REPLY || $REPLY == a || $REPLY == A ]] ; then
+			do_apache=y
+		fi
+	else
+		do_apache=y
+	fi
+fi
+
+do_libmysql=n
+if [[ "$major" < "53" ]] ; then
+	do_libmysql=y
+elif [[ -n `which mysql_config` ]] ; then
+	echo ""
+	echo -n "Which mysql library mysqlnd (n) or libmysql (l)? [N|l] "
+	read -e
+	if [[ $REPLY == l || $REPLY == L ]] ; then
+		do_libmysql=y
+	fi
+fi
+
+echo -n "Shall I run make clean and vcsclean for you before starting? [Y|n] "
+read -e
+if [[ -z $REPLY || $REPLY == y || $REPLY == Y ]] ; then
+	make clean
+	./vcsclean
+fi
+
+
+if [ ! -x configure ] ; then
+	./buildconf --force
+	if [ $? -ne 0 ] ; then
+		echo "ERROR: buildconf had a problem."
+		exit 1
+	fi
+fi
+
+
+# vvvvvvvvvvvvvvvvvvvvvvvvv
+# USER CONFIGURATION (UC)
+
+if [ $do_apache == y ] ; then
+	# UC:  Adjust path to apxs2, if necessary.
+	apache="--with-apxs2=/usr/bin/apxs2"
+	if [[ "$major" < "54" ]] ; then
+		prefix=${prefix}.ap
+	fi
+else
+	apache=
+fi
+
+if [[ $do_libmysql == y ]] ; then
+	# UC:  Adjust path to mysql_config, if necessary.
+	cfg="/usr/bin/mysql_config"
+
+	mysql="--with-mysql=/usr --with-mysqli=$cfg --with-pdo-mysql=$cfg"
+	prefix=${prefix}.lm
+else
+	mysql="--with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd"
+fi
+
+echo "$prefix" > phpvs-prefix.txt
+
+# NOTE:  While PEAR is not wanted in these installs, it's necessary
+# because pecl is used for installing extensions and pecl comes from
+# the PEAR installer.  Oh, well.
+
+# UC:  Add and/or remove configuration options as desired.
+./configure \
+	--prefix=$prefix \
+	--with-config-file-scan-dir=$prefix/lib \
+	--with-pear=$prefix/lib/php \
+	--with-layout=GNU \
+	\
+	$apache \
+	--enable-bcmath \
+	--with-bz2 \
+	--with-curl \
+	--enable-mbstring \
+	$mysql \
+	--with-openssl \
+	--with-pgsql \
+	--with-pdo-pgsql \
+	--enable-soap \
+	--with-unixODBC=/usr \
+	--with-xsl \
+	--with-zlib
+
+# ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+if [ $? -ne 0 ] ; then
+	echo "ERROR: configure had a problem."
+	exit 1
+fi
+
+
+make -j5
+if [ $? -ne 0 ] ; then
+	echo "ERROR: make had a problem."
+	exit 1
+fi
+
+
+echo ""
+echo "Excellent!  phpcm ran fine."
+echo "Now run 'phpi ${major,,*}' as root or via sudo."
+echo ""
