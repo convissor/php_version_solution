@@ -102,7 +102,7 @@ of PHP for the current terminal session.  Note, `cd54`, `cd52`, `cd53`,
 and `cdtr` are aliases added by phpvs to simplify getting to PHP's
 source code.
 
-Please be aware that `phpi` updates the version of PHP used by lighttpd
+    Please be aware that `phpi` updates the version of PHP used by lighttpd
 and/or Apache httpd depending on your configuration.  The most recently
 installed version of PHP is the one used by the web server.
 
