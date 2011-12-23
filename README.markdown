@@ -71,8 +71,8 @@ are automatically placed in a version specific `extensions.php.ini` file
 by `phpi`.
 
 * If using xdebug, edit the settings in `lib/phpvs/xdebug.php.ini`.
-`xdebug.trace_output_dir` and `xdebug.profiler_output_dir` are the
-most important.
+`xdebug.trace_output_dir`, `xdebug.profiler_output_dir`, and
+`xdebug.idekey` are the most important.
 
 * Store your settings.
 

@@ -26,6 +26,10 @@ export PHPVS_PEAR_BIN_FILE=/usr/local/bin/pear
 # at the bottom of "pear config-show".
 export PHPVS_PEAR_CONFIG_FILE=/usr/local/etc/pear.conf
 
+# The idkey / session name for command line usage of Xdebug.
+# This value and the one in xdebug.php.ini must match.
+export XDEBUG_CONFIG="idkey=your_key"
+
 # ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
@@ -109,6 +113,7 @@ https://github.com/convissor/php_version_solution
 
 	export PHPVS_RUN_TEST=${!src_var}/run-tests.php
 	export TEST_PHP_EXECUTABLE=`which php`
+	export PHP_PEAR_PHP_BIN=$TEST_PHP_EXECUTABLE
 }
 export -f phpvs
 
