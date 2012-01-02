@@ -160,11 +160,13 @@ echo "$prefix" > phpvs-prefix.txt
 	--with-bz2 \
 	--with-curl \
 	--enable-mbstring \
+	--with-mcrypt \
 	$mysql \
 	--with-openssl \
 	--with-pgsql \
 	--with-pdo-pgsql \
 	--enable-soap \
+	--with-tidy \
 	--with-unixODBC=/usr \
 	--with-xsl \
 	--with-zlib
