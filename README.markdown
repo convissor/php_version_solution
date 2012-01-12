@@ -34,6 +34,7 @@ Scripts
 * phprm:  removes a PHP installation under the current directory
 * phpt:   runs .phpt tests via PHP's run-tests.php
 * peart:  runs .phpt tests via PEAR's run-tests (with strict & deprecated off)
+* phput:  runs PHPUnit (with strict & deprecated off)
 
 
 Installation
