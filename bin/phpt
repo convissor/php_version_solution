@@ -18,4 +18,4 @@ if [[ -z $1 || $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
 	exit 1
 fi
 
-$TEST_PHP_EXECUTABLE $PHPVS_RUN_TEST "$@"
+"$TEST_PHP_EXECUTABLE" "$PHPVS_RUN_TEST" "$@"

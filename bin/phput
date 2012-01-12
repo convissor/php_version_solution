@@ -16,5 +16,5 @@ if [[ -z $1 || $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
 	exit 1
 fi
 
-dir=`dirname $0`
-$TEST_PHP_EXECUTABLE $dir/phpunit -d error_reporting=22527 "$@"
+dir=`dirname "$0"`
+"$TEST_PHP_EXECUTABLE" "$dir/phpunit" -d error_reporting=22527 "$@"
