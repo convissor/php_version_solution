@@ -15,4 +15,4 @@ sudo chmod 644 $prefix/lib/phpvs/*
 
 sudo cp -i bin/* $prefix/bin
 sudo chmod 665 $prefix/bin/phpcm
-sudo chmod 755 $prefix/bin/peart $prefix/bin/php[it]
+sudo chmod 755 $prefix/bin/peart $prefix/bin/phput $prefix/bin/php[it]

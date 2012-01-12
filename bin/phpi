@@ -8,7 +8,7 @@ Usage:  phpi <branch>
 
 Installs the PHP binary compiled in your regular user account via 'phpcm'.
 
-See Also:  peart, phpcm, phprm, phpt, phpvs
+See Also:  peart, phpcm, phprm, phpt, phput, phpvs
 
 This is part of the PHP Version Solution:
 https://github.com/convissor/php_version_solution

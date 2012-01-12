@@ -14,7 +14,7 @@ Needs to be run from a trunk or branch subdirectory under PHPVS_SRC_PATH
 ($PHPVS_SRC_PATH).  That and related environment
 variables are defined in $PHPVS_LIB_PATH/phpvs.
 
-See Also:  peart, phpi, phprm, phpt, phpvs
+See Also:  peart, phpi, phprm, phpt, phput, phpvs
 
 This is part of the PHP Version Solution:
 https://github.com/convissor/php_version_solution

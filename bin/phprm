@@ -10,7 +10,7 @@ the 'php' executable to be removed.
 
 NOTE: expects a standard GNU layout of PHP.
 
-See Also:  peart, phpcm, phpi, phpt, phpvs
+See Also:  peart, phpcm, phpi, phpt, phput, phpvs
 
 This is part of the PHP Version Solution:
 https://github.com/convissor/php_version_solution
