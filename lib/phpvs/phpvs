@@ -56,8 +56,10 @@ Usage:  phpvs <version>
          * 'usr' removes the settings added by this function.
          * Versions having '.lm' in them means --with-libmysql.
            Others use --with-mysqlnd.
-         * Versions < 54 having '.ap' in them means --with-apxs2 (mod_php
-           SAPI for Apache).  Others use CGI SAPI.  All use CLI SAPI.
+         * Versions having '.ap' in them means --with-apxs2 (mod_php
+           SAPI for Apache).
+         * Versions < 54 only have CGI SAPI if '.ap' is not in the name.
+         * All use CLI SAPI.
          * See bottom of output for choices available on your system.
 
 Places the desired version of PHP at the front of your PATH.

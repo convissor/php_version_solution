@@ -86,7 +86,12 @@ if [ -x /etc/init.d/apache2 ] ; then
 			do_apache=y
 		fi
 	else
-		do_apache=y
+		echo ""
+		echo -n "Should the Apache SAPI be built? [Y|n] "
+		read -e
+		if [[ -z $REPLY || $REPLY == y || $REPLY == Y ]] ; then
+			do_apache=y
+		fi
 	fi
 fi
 
@@ -125,9 +130,7 @@ fi
 if [ $do_apache == y ] ; then
 	# UC:  Adjust path to apxs2, if necessary.
 	apache="--with-apxs2=/usr/bin/apxs2"
-	if [[ "$major" < "54" ]] ; then
-		prefix=${prefix}.ap
-	fi
+	prefix=${prefix}.ap
 else
 	apache=
 fi
