@@ -10,7 +10,7 @@ if [[ -z $1 || $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
 	echo "selected by phpvs."
 	echo ""
 	echo "See Also, re Unit Testing:  peart, phput"
-    echo "See Also:  phpcm, phpi, phprm, phpvs"
+	echo "See Also:  phpcm, phpi, phprm, phpvs"
 	echo ""
 	echo "This is part of the PHP Version Solution:"
 	echo "https://github.com/convissor/php_version_solution"
