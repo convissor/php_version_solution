@@ -8,6 +8,12 @@ prefix=/usr/local
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+branch=`git branch | grep -E '^\*'`
+if [[ $branch == "* master" ]] ; then
+	echo "ERROR: don't install from the 'master' branch."
+	echo "Check out your custom branch, then run install."
+	exit 1
+fi
 
 sudo cp -ir lib/phpvs $prefix/lib
 sudo chmod 755 $prefix/lib/phpvs
