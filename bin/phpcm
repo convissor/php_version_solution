@@ -40,45 +40,25 @@ while getopts "p:" OPTION ; do
 done
 
 
-if [[ $PWD != "$PHPVS_SRC_PATH/branches/"* && $PWD != "$PHPVS_SRC_PATH/trunk" ]]
-then
-	echo "ERROR: cd into a branch or trunk directory under"
-	echo "$PHPVS_SRC_PATH."
-	echo "$usage"
+cd "$PHPVS_SRC_PATH"
+if [ $? -ne 0 ] ; then
+	echo "ERROR: could not cd into the source dir."
 	exit 1
 fi
 
-if [[ $PWD == *trunk ]] ; then
-	dir=tr
-	major=TR
+branch=`git branch | grep -E '^\*'`
+if [[ "$branch" == "* master" ]] ; then
+	version=ma
 else
-	dir=${PWD//[^0-9]/}
-	major=${dir:0:2}
+	version=${branch//[^0-9]/}
 fi
-prefix=$PHPVS_BIN_PATH/$dir$prefix_addition
-src_var=PHPVS_SRC_$major
-
-if [ -z "${!src_var}" ] ; then
-	echo "ERROR: the environment variable corresponding to this directory,"
-	echo "$src_var, does not exist.  Add it to $PHPVS_LIB_PATH/phpvs,"
-	echo "run 'source ~/.bashrc', and try again."
-	exit 1
-fi
-if [ $PWD != ${!src_var} ] ; then
-	echo "ERROR: the directory you are in,"
-	echo $PWD
-	echo "does not correspond to the value of $src_var, which is"
-	echo ${!src_var}
-	echo "Edit $src_var in $PHPVS_LIB_PATH/phpvs,"
-	echo "run 'source ~/.bashrc', and try again."
-	exit 1
-fi
+prefix="$PHPVS_BIN_PATH/$version$prefix_addition"
 
 
 # PHP 5.4 can do multiple SAPI's, but earlier versions can only to CLI + 1.
 do_apache=n
 if [ -x /etc/init.d/apache2 ] ; then
-	if [[ "$major" < "54" ]] ; then
+	if [[ "$version" < "54" ]] ; then
 		echo ""
 		echo -n "Which SAPI should be built, Apache (a) or CGI (c)? [A|c] "
 		read -e
@@ -96,7 +76,7 @@ if [ -x /etc/init.d/apache2 ] ; then
 fi
 
 do_libmysql=n
-if [[ "$major" < "53" ]] ; then
+if [[ "$version" < "53" ]] ; then
 	do_libmysql=y
 elif [[ -n `which mysql_config` ]] ; then
 	echo ""
@@ -191,5 +171,5 @@ fi
 
 echo ""
 echo "Excellent!  phpcm ran fine."
-echo "Now run 'phpi ${major,,*}' as root or via sudo."
+echo "Now run 'phpi' as root or via sudo."
 echo ""

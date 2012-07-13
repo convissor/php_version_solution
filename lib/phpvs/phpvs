@@ -6,8 +6,7 @@
 # vvvvvvvvvvvvvvvvvvvvvvvvv
 # USER CONFIGURATION
 
-# The directory containing the "branches" and "trunk" directories
-# in a checkout of PHP's source code.
+# The directory containing the PHP source code.
 export PHPVS_SRC_PATH=/path/to/php-src
 
 # The directory where the various versions of PHP should be installed.
@@ -35,15 +34,6 @@ export XDEBUG_CONFIG="idkey=your_key"
 
 # AUTOMATIC SETTINGS.  LEAVE STUFF BELOW HERE ALONE.
 
-export PHPVS_SRC_52=$PHPVS_SRC_PATH/branches/PHP_5_2
-export PHPVS_SRC_53=$PHPVS_SRC_PATH/branches/PHP_5_3
-export PHPVS_SRC_54=$PHPVS_SRC_PATH/branches/PHP_5_4
-export PHPVS_SRC_TR=$PHPVS_SRC_PATH/trunk
-
-alias cd52="cd $PHPVS_SRC_52"
-alias cd53="cd $PHPVS_SRC_53"
-alias cd54="cd $PHPVS_SRC_54"
-alias cdtr="cd $PHPVS_SRC_TR"
 alias cdsrc="cd $PHPVS_SRC_PATH"
 
 
@@ -95,7 +85,6 @@ https://github.com/convissor/php_version_solution
 
 	if [ $1 == usr ] ; then
 		export PATH=$PHPVS_PATH_BASE
-		src_var=PHPVS_SRC_54
 	else
 		add=$PHPVS_BIN_PATH/$1/bin
 
@@ -108,12 +97,9 @@ https://github.com/convissor/php_version_solution
 		fi
 
 		export PATH=$add:$PHPVS_PATH_BASE
-
-		src_var=PHPVS_SRC_${1:0:2}
-		src_var=${src_var^^*}
 	fi
 
-	export PHPVS_RUN_TEST=${!src_var}/run-tests.php
+	export PHPVS_RUN_TEST=$PHPVS_SRC_PATH/run-tests.php
 	export TEST_PHP_EXECUTABLE=`which php`
 	export PHP_PEAR_PHP_BIN=$TEST_PHP_EXECUTABLE
 }

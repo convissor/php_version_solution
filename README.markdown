@@ -7,7 +7,7 @@ Overview
 PHP Version Solution is a set of bash scripts for compiling, installing,
 and switching between multiple versions of PHP on *nix machines.
 
-The package builds PHP from branch and trunk checkouts of svn.php.net.
+The package builds PHP from branch and trunk checkouts of git.php.net.
 
 The installation routine also sets symlinks for `php` and `php-cgi` in
 `/usr/bin` and `/usr/local/bin` to point to the most recently installed
@@ -49,11 +49,8 @@ Installation
 * Check out php-src from PHP's repository.  Below is an example.
 
         cd /some/place/else
-        svn co https://svn.php.net/repository/php/php-src --depth immediates
+        git clone git://git.php.net/php-src.git
         cd php-src
-        svn up trunk --set-depth infinity
-        svn up tags branches --set-depth immediates
-        svn up branches/PHP_5_3 branches/PHP_5_4 --set-depth infinity
         pwd
         cd /back/to/php_version_solution
 
@@ -107,7 +104,9 @@ source code.
 and/or Apache httpd depending on your configuration.  The most recently
 installed version of PHP is the one used by the web server.
 
-        cd54
+        cdsrc
+        git checkout PHP-5.4
+        git pull
         phpcm
         sudo phpi
         phpvs 54

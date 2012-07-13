@@ -3,8 +3,7 @@
 # See the "USER CONFIGURATION" section in the middle of the file.
 
 usage="
-Usage:  phpi <branch>
-  @param string <branch>  the major version to install (52, 53, 54, tr)
+Usage:  phpi
 
 Installs the PHP binary compiled in your regular user account via 'phpcm'.
 
@@ -19,42 +18,33 @@ if [[ $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
 	exit 1
 fi
 
-if [ -z $1 ] ; then
-	echo "ERROR: pass in the PHP branch to install"
-	echo "$usage"
+cd "$PHPVS_SRC_PATH"
+if [ $? -ne 0 ] ; then
+	echo "ERROR: could not cd into the source dir."
 	exit 1
 fi
 
-major=${1:0:2}
-major=${major^^*}
-src_var=PHPVS_SRC_$major
-
-if [ -z "${!src_var}" ] ; then
-	echo "ERROR: the environment variable $src_var does not exist."
-	echo "Two options: 1) Use a supported version, or 2) add it to"
-	echo "$PHPVS_LIB_PATH/phpvs, run 'source ~/.bashrc',"
-	echo "and try again."
-	echo "$usage"
-	exit 1
-fi
-if [ ! -d ${!src_var} ] ; then
-	echo "ERROR: the following source directory does not exist:"
-	echo ${!src_var}
-	echo "Edit $src_var in $PHPVS_LIB_PATH/phpvs,"
-	echo "run 'source ~/.bashrc', and try again."
-	exit 1
+branch=`git branch | grep -E '^\*'`
+if [[ "$branch" == "* master" ]] ; then
+	dir=ma
+else
+	dir=${branch//[^0-9]/}
 fi
 
+branch=`git branch | grep -E '^\*'`
+if [[ "$branch" == "* master" ]] ; then
+	version=ma
+else
+	version=${branch//[^0-9]/}
+fi
 
-cd ${!src_var}
+prefix=`cat phpvs-prefix.txt`
+
 
 if [[ ! -f ext/date/php_date.lo || ! -f phpvs-prefix.txt ]] ; then
 	echo "ERROR: your regular user hasn't run 'phpcm' yet."
 	exit 1
 fi
-
-prefix=`cat phpvs-prefix.txt`
-version=${prefix##*/}
 
 make install
 if [ $? -ne 0 ] ; then
@@ -79,7 +69,7 @@ declare -A pecl_packages=(
 )
 
 # UC:  Then specify additional PECL packages for particular versions.
-case $major in
+case $version in
 	52)
 		ext_dir=$prefix/lib/php/20060613
 		pecl_packages[xdebug]=zend_extension
@@ -88,12 +78,12 @@ case $major in
 		ext_dir=$prefix/lib/php/20090626
 		pecl_packages[xdebug]=zend_extension
 		;;
-	54|TR)
+	54|ma)
 		ext_dir=$prefix/lib/php/20100525
 		# Xdebug isn't ready for these branches yet.
 		;;
 	*)
-		echo "ERROR: add $major to case statement in phpi and try again."
+		echo "ERROR: add $version to case statement in phpi and try again."
 		exit 1
 		;;
 esac
@@ -155,16 +145,16 @@ fi
 
 
 if [ -x /etc/init.d/apache2 ] ; then
-	if [[ "$major" > "53" || $version == *.ap* ]] ; then
+	if [[ "$version" > "53" || $prefix == *.ap* ]] ; then
 		/etc/init.d/apache2 restart
 	fi
 fi
 
 if [ -x /etc/init.d/lighttpd ] ; then
-	if [[ "$major" < "53" ]] ; then
+	if [[ "$version" < "53" ]] ; then
 		echo "WARNING: lighttpd is not compatible with PHP 5.2"
 		/etc/init.d/lighttpd stop
-	elif [[ "$major" > "53" || $version != *.ap* ]] ; then
+	elif [[ "$version" > "53" || $prefix != *.ap* ]] ; then
 		/etc/init.d/lighttpd restart
 	fi
 fi
