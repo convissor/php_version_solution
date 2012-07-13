@@ -1,8 +1,9 @@
 #! /bin/bash
 
-if [[ -z $1 || $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
+if [[ $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
 	echo ""
-	echo "Usage:  phput <path>"
+	echo "Usage:  phput [path] [path]..."
+	echo "  @param string path  the names of files or directories to execute"
 	echo ""
 	echo "Executes phpunit using your active version of PHP.  Also sets"
 	echo "error_reporting to 22527 (E_ALL & ~E_STRICT & ~E_DEPRECATED)."
