@@ -24,22 +24,9 @@ if [ $? -ne 0 ] ; then
 	exit 1
 fi
 
-branch=`git branch | grep -E '^\*'`
-if [[ "$branch" == "* master" ]] ; then
-	dir=ma
-else
-	dir=${branch//[^0-9]/}
-fi
-
-branch=`git branch | grep -E '^\*'`
-if [[ "$branch" == "* master" ]] ; then
-	version=ma
-else
-	version=${branch//[^0-9]/}
-fi
-
 prefix=`cat phpvs-prefix.txt`
-
+phpvs_subdir=${prefix##*/}
+version=${phpvs_subdir%.*}
 
 if [[ ! -f ext/date/php_date.lo || ! -f phpvs-prefix.txt ]] ; then
 	echo "ERROR: your regular user hasn't run 'phpcm' yet."
@@ -52,7 +39,7 @@ if [ $? -ne 0 ] ; then
 	exit 1
 fi
 
-phpvs $version
+phpvs $phpvs_subdir
 if [ $? -ne 0 ] ; then
 	exit 1
 fi
