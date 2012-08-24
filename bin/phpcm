@@ -146,6 +146,7 @@ echo "$prefix" > phpvs-prefix.txt
 	--with-mcrypt \
 	$mysql \
 	--with-openssl \
+	--enable-pcntl \
 	--with-pgsql \
 	--with-pdo-pgsql \
 	--enable-soap \
