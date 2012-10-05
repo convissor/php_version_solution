@@ -119,11 +119,10 @@ installed version of PHP is the one used by the web server.
     When asked to adjust the configuration:
 
     * `1 Installation base ($prefix)` set it to `/usr/local`
-    * `8 User-modifiable configuration files directory` set it to `/root`
-    * `11 Name of configuration file` set it to `/usr/local/etc/pear.conf`
 
     Once the install is done, adjust some other settings.
 
+        sudo pear config-set auto_discover 1
         sudo pear config-set ext_dir ""
         sudo pear config-set php_bin "/usr/local/bin/php"
         sudo pear config-set sig_keydir ""
