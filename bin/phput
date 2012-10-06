@@ -5,8 +5,7 @@ if [[ $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
 	echo "Usage:  phput [path] [path]..."
 	echo "  @param string path  the names of files or directories to execute"
 	echo ""
-	echo "Executes phpunit using your active version of PHP.  Also sets"
-	echo "error_reporting to 22527 (E_ALL & ~E_STRICT & ~E_DEPRECATED)."
+	echo "Executes phpunit using your active version of PHP."
 	echo ""
 	echo "See Also, re Unit Testing:  phpt, peart"
 	echo "See Also:  phpcm, phpi, phprm, phpvs"
@@ -18,4 +17,11 @@ if [[ $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
 fi
 
 dir=`dirname "$0"`
-"$TEST_PHP_EXECUTABLE" "$dir/phpunit" -d error_reporting=22527 "$@"
+
+echo -n "Set error_reporting to E_ALL & ~E_STRICT & ~E_DEPRECATED? [N/y]: "
+read -e
+if [[ "$REPLY" == y || "$REPLY" == Y ]] ; then
+	"$TEST_PHP_EXECUTABLE" "$dir/phpunit" -d error_reporting=22527 "$@"
+else
+	"$TEST_PHP_EXECUTABLE" "$dir/phpunit" "$@"
+fi
