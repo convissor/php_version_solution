@@ -142,6 +142,8 @@ echo "$prefix" > phpvs-prefix.txt
 	--enable-bcmath \
 	--with-bz2 \
 	--with-curl \
+	--with-gd \
+	--with-jpeg-dir=/usr/lib \
 	--enable-mbstring \
 	--with-mcrypt \
 	$mysql \
