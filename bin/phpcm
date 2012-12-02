@@ -60,16 +60,16 @@ do_apache=n
 if [ -x /etc/init.d/apache2 ] ; then
 	if [[ "$version" < "54" ]] ; then
 		echo ""
-		echo -n "Which SAPI should be built, Apache (a) or CGI (c)? [A|c] "
+		echo -n "Which SAPI should be built, Apache (a) or CGI (c)? [a|C] "
 		read -e
-		if [[ -z $REPLY || $REPLY == a || $REPLY == A ]] ; then
+		if [[ "$REPLY" == a || "$REPLY" == A ]] ; then
 			do_apache=y
 		fi
 	else
 		echo ""
-		echo -n "Should the Apache SAPI be built? [Y|n] "
+		echo -n "Should the Apache SAPI be built? [y|N] "
 		read -e
-		if [[ -z $REPLY || $REPLY == y || $REPLY == Y ]] ; then
+		if [[ "$REPLY" == y || "$REPLY" == Y ]] ; then
 			do_apache=y
 		fi
 	fi
