@@ -66,8 +66,13 @@ case $version in
 		ext_dir=$prefix/lib/php/20090626
 		pecl_packages[xdebug]=zend_extension
 		;;
-	54|ma)
+	54)
 		ext_dir=$prefix/lib/php/20100525
+		pecl_packages[xdebug]=zend_extension
+		;;
+	55|ma)
+		# grep ZEND_MODULE_API_NO Zend/zend_modules.h
+		ext_dir=$prefix/lib/php/20121128
 		# Xdebug isn't ready for these branches yet.
 		;;
 	*)
