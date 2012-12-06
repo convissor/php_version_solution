@@ -118,7 +118,7 @@ installed version of PHP is the one used by the web server.
         sudo echo "#PEAR_Config 0.9" > /root/.pearrc
         sudo echo "a:0:{}" >> /root/.pearrc
         sudo chmod 400 /root/.pearrc
-        sudo php go-pear.phar
+        sudo -E php go-pear.phar
 
     When asked to adjust the configuration:
 
