@@ -114,18 +114,22 @@ installed version of PHP is the one used by the web server.
 * Install the centralized PEAR repository if one doesn't exist.
 
         wget http://pear.php.net/go-pear.phar
+        export PHP_PEAR_PHP_BIN=/usr/local/bin/php
         sudo php go-pear.phar
 
     When asked to adjust the configuration:
 
     * `1 Installation base ($prefix)` set it to `/usr/local`
+    * `5 PHP code directory ($php_dir)` set it to `/usr/local/share/pear`
+    * `8 User-modifiable configuration files directory` set it to `/usr/local/cfg`
+    * `11 Name of configuration file` set it to `/usr/local/etc/pear.conf`
 
     Once the install is done, adjust some other settings.
 
-        sudo pear config-set auto_discover 1
-        sudo pear config-set ext_dir ""
-        sudo pear config-set php_bin "/usr/local/bin/php"
-        sudo pear config-set sig_keydir ""
+        sudo pear config-set auto_discover 1 system
+        sudo pear config-set ext_dir "" system
+        sudo pear config-set php_bin "/usr/local/bin/php" system
+        sudo pear config-set sig_keydir "" system
 
     Disable the centralized pecl install to avoid conflicts with the
     pecl installed for each version of PHP.
