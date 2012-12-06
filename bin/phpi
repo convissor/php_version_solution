@@ -53,7 +53,7 @@ fi
 # UC:  First, specify which PECL packages to install for all versions.
 # Format: [package_name]=extension_type
 declare -A pecl_packages=(
-	[imagick]=extension
+	[imagick-beta]=extension
 	[memcache]=extension
 	[mongo]=extension
 )
