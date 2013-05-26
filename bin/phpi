@@ -130,18 +130,22 @@ done
 chmod 644 $prefix/bin/pear
 
 
-if [[ -f /usr/bin/php && ! -h /usr/bin/php ]] ; then
-	echo "NOTICE: /usr/bin/php exists.  Symlink from it will not be created."
-else
-	ln -fs $prefix/bin/php /usr/bin/php
-	ln -fs $prefix/bin/php-cgi /usr/bin/php-cgi
-fi
+echo -n "Point /usr/bin/php and /usr/local/bin/php symlinks to the new install? [Y|n] "
+read -e
+if [[ -z $REPLY || $REPLY == y || $REPLY == Y ]] ; then
+	if [[ -f /usr/bin/php && ! -h /usr/bin/php ]] ; then
+		echo "NOTICE: /usr/bin/php exists.  Symlink from it will not be created."
+	else
+		ln -fs $prefix/bin/php /usr/bin/php
+		ln -fs $prefix/bin/php-cgi /usr/bin/php-cgi
+	fi
 
-if [[ -f /usr/local/bin/php && ! -h /usr/local/bin/php ]] ; then
-	echo "NOTICE: /usr/local/bin/php exists.  Symlink from it will not be created."
-else
-	ln -fs $prefix/bin/php /usr/local/bin/php
-	ln -fs $prefix/bin/php-cgi /usr/local/bin/php-cgi
+	if [[ -f /usr/local/bin/php && ! -h /usr/local/bin/php ]] ; then
+		echo "NOTICE: /usr/local/bin/php exists.  Symlink from it will not be created."
+	else
+		ln -fs $prefix/bin/php /usr/local/bin/php
+		ln -fs $prefix/bin/php-cgi /usr/local/bin/php-cgi
+	fi
 fi
 
 
