@@ -46,6 +46,9 @@ if [ $? -ne 0 ] ; then
 	exit 1
 fi
 
+ext_dir=$(awk '/define ZEND_MODULE_API_NO/{print $3}' Zend/zend_modules.h)
+ext_dir="$prefix/lib/php/$ext_dir"
+
 
 # vvvvvvvvvvvvvvvvvvvvvvvvv
 # USER CONFIGURATION (UC)
@@ -60,25 +63,9 @@ declare -A pecl_packages=(
 
 # UC:  Then specify additional PECL packages for particular versions.
 case $version in
-	52)
-		ext_dir=$prefix/lib/php/20060613
+	52|53|54|55)
 		pecl_packages[xdebug]=zend_extension
-		;;
-	53)
-		ext_dir=$prefix/lib/php/20090626
-		pecl_packages[xdebug]=zend_extension
-		;;
-	54)
-		ext_dir=$prefix/lib/php/20100525
-		pecl_packages[xdebug]=zend_extension
-		;;
-	55)
-		ext_dir=$prefix/lib/php/20121212
-		pecl_packages[xdebug]=zend_extension
-		;;
-	ma)
-		# grep ZEND_MODULE_API_NO Zend/zend_modules.h
-		ext_dir=$prefix/lib/php/20121212
+	56|ma)
 		# Xdebug isn't ready for these branches yet.
 		;;
 	*)
