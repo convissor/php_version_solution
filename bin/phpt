@@ -18,4 +18,10 @@ if [[ -z $1 || $1 == "-h" || $1 == "--help" || $1 == "help" ]] ; then
 	exit 1
 fi
 
-"$TEST_PHP_EXECUTABLE" "$PHPVS_RUN_TEST" "$@"
+echo -n "Set error_reporting to E_ALL & ~E_STRICT & ~E_DEPRECATED? [N/y]: "
+read -e
+if [[ "$REPLY" == y || "$REPLY" == Y ]] ; then
+	"$TEST_PHP_EXECUTABLE" "$PHPVS_RUN_TEST" -d error_reporting=22527 "$@"
+else
+	"$TEST_PHP_EXECUTABLE" "$PHPVS_RUN_TEST" "$@"
+fi
