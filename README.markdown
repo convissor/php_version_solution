@@ -83,11 +83,11 @@ by regular users, not root, to avoid permission conflicts in the checkout.
 
         ./install.sh
 
-* Put the following in your ~/.bashrc.  The example, below, makes PHP 5.4
+* Put the following in your ~/.bashrc.  The example, below, makes PHP 5.6
 the default version.  Adjust the paths and version as needed.
 
         source /usr/local/lib/phpvs/phpvs
-        phpvs 54
+        phpvs 56
 
 * Load the variables and functions by running this in each open terminal.
 Don't worry about the error saying "php does not exist or is not
@@ -95,21 +95,19 @@ executable," that will be fixed upon installing the desired version of PHP.
 
         source ~/.bashrc
 
-* Compile and install PHP 5.4.  Finish by making it the active version
-of PHP for the current terminal session.  Note, `cd54`, `cd52`, `cd53`,
-and `cdtr` are aliases added by phpvs to simplify getting to PHP's
-source code.
+* Compile and install PHP 5.6.  Finish by making it the active version
+of PHP for the current terminal session.
 
     Please be aware that `phpi` updates the version of PHP used by lighttpd
 and/or Apache httpd depending on your configuration.  The most recently
 installed version of PHP is the one used by the web server.
 
         cdsrc
-        git checkout PHP-5.4
+        git checkout PHP-5.6
         git pull
         phpcm
         sudo phpi
-        phpvs 54
+        phpvs 56
 
 * Install the centralized PEAR repository if one doesn't exist.
 
