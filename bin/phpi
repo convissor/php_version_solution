@@ -63,11 +63,14 @@ declare -A pecl_packages=(
 
 # UC:  Then specify additional PECL packages for particular versions.
 case $version in
-	52|53|54|55)
+	54|55|56)
 		pecl_packages[xdebug]=zend_extension
 		;;
-	56|ma)
+	70|ma)
 		echo "Xdebug isn't ready for this branch yet."
+		;;
+	52|53)
+		echo "Xdebug is no longer compatible with this branch."
 		;;
 	*)
 		echo "ERROR: add $version to case statement in phpi and try again."
