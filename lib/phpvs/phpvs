@@ -100,6 +100,7 @@ https://github.com/convissor/php_version_solution
 	fi
 
 	export PHPVS_RUN_TEST=$PHPVS_SRC_PATH/run-tests.php
+	export PHPVS_PHP_EDITION=${1%.*}
 	export TEST_PHP_EXECUTABLE=`which php`
 	export PHP_PEAR_PHP_BIN=$TEST_PHP_EXECUTABLE
 }

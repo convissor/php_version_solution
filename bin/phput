@@ -18,10 +18,23 @@ fi
 
 dir=`dirname "$0"`
 
+case "$PHPVS_PHP_EDITION" in
+	53|54|55)
+		phpunit=$dir/phpunit-old
+		;;
+	56|70|ma)
+		phpunit=$dir/phpunit
+		;;
+	*)
+		echo "ERROR: PHPUnit is not compatible with this branch."
+		exit 1
+		;;
+esac
+
 echo -n "Set error_reporting to E_ALL & ~E_STRICT & ~E_DEPRECATED? [N/y]: "
 read -e
 if [[ "$REPLY" == y || "$REPLY" == Y ]] ; then
-	"$TEST_PHP_EXECUTABLE" "$dir/phpunit" -d error_reporting=22527 "$@"
+	"$TEST_PHP_EXECUTABLE" "$phpunit" -d error_reporting=22527 "$@"
 else
-	"$TEST_PHP_EXECUTABLE" "$dir/phpunit" "$@"
+	"$TEST_PHP_EXECUTABLE" "$phpunit" "$@"
 fi

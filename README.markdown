@@ -136,3 +136,12 @@ installed version of PHP is the one used by the web server.
     pecl installed for each version of PHP.
 
         sudo chmod 644 /usr/local/bin/pecl
+
+* Install the current and "old" PHPUnits.  The current one will be used
+for PHP >= 5.6.  The old one will be used for PHP <= 5.5.
+
+        wget -O /usr/local/bin/phpunit https://phar.phpunit.de/phpunit.phar
+        chmod 755 /usr/local/bin/phpunit
+
+        wget -O /usr/local/bin/phpunit-old https://phar.phpunit.de/phpunit-old.phar
+        chmod 755 /usr/local/bin/phpunit-old
