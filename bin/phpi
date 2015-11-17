@@ -111,11 +111,14 @@ for package in ${!pecl_packages[@]} ; do
 		echo ""
 	fi
 
+	# Strip "-beta" from string.
+	so=${package%-beta}.so
+
 	# Do this because 5.2 doesn't like full path on regular extensions.
 	if [ ${pecl_packages[$package]} == extension ] ; then
-		echo "${pecl_packages[$package]} = $package.so" >> $ext_ini
+		echo "${pecl_packages[$package]} = $so" >> $ext_ini
 	else
-		echo "${pecl_packages[$package]} = $ext_dir/$package.so" >> $ext_ini
+		echo "${pecl_packages[$package]} = $ext_dir/$so" >> $ext_ini
 	fi
 done
 
