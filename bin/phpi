@@ -57,20 +57,23 @@ ext_dir="$prefix/lib/php/$ext_dir"
 # Format: [package_name]=extension_type
 declare -A pecl_packages=(
 	[imagick-beta]=extension
-	[memcache]=extension
-	[mongo]=extension
 )
 
 # UC:  Then specify additional PECL packages for particular versions.
 case $version in
 	54|55|56)
+		pecl_packages[memcache]=extension
+		pecl_packages[mongodb]=extension
 		pecl_packages[xdebug]=zend_extension
 		;;
 	70|ma)
 		echo "Xdebug isn't ready for this branch yet."
+		pecl_packages[mongodb]=extension
 		;;
 	52|53)
 		echo "Xdebug is no longer compatible with this branch."
+		pecl_packages[memcache]=extension
+		pecl_packages[mongo]=extension
 		;;
 	*)
 		echo "ERROR: add $version to case statement in phpi and try again."
