@@ -123,7 +123,7 @@ installed version of PHP is the one used by the web server.
     * `1 Installation base ($prefix)` set it to `/usr/local`
     * `5 PHP code directory ($php_dir)` set it to `/usr/local/share/pear`
     * `8 User-modifiable configuration files directory` set it to `/usr/local/cfg`
-    * `11 Name of configuration file` set it to `/usr/local/etc/pear.conf`
+    * `12 Name of configuration file` set it to `/usr/local/etc/pear.conf`
 
     Once the install is done, adjust some other settings.
 
